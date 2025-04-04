@@ -66,6 +66,7 @@ class MealFragment : Fragment() {
         }, onFavoriteClick = {
             viewModel.updateFavoriteState(it)
         })
+        binding.rVMeal.itemAnimator = null
         binding.rVMeal.layoutManager = GridLayoutManager(context, 2)
         binding.rVMeal.adapter = adapter
     }

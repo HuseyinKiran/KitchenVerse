@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -17,6 +18,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.huseyinkiran.kitchenapp.R
 import com.huseyinkiran.kitchenapp.databinding.FragmentMealDetailBinding
+import com.huseyinkiran.kitchenapp.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -52,38 +54,60 @@ class MealDetailFragment : Fragment() {
     private fun observeMealDetails() = with(binding) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.meal.collect { meal ->
-                    meal?.let {
-                        sVMain.isVisible = true
-
-                        txtMealName.text = meal.strMeal
-
-                        context?.let {
-                            Glide.with(it).load(meal.strMealThumb).into(imgMeal)
+                viewModel.meal.collect { resource ->
+                    when (resource) {
+                        is Resource.Loading -> {
+                            progressBar.isVisible = true
+                            txtError.isGone = true
+                            sVMain.isGone = true
                         }
 
-                        txtArea.text = meal.strArea
-                        txtCategory.text = meal.strCategory
-                        txtTags.text = meal.strTags
-                        txtInstruction.text = meal.strInstructions
+                        is Resource.Success -> {
+                            progressBar.isGone = true
+                            txtError.isGone = true
+                            sVMain.isVisible = true
 
-                        btnFav.setImageResource(
-                            if (meal.isFavorite) R.drawable.btn_remove_fav
-                            else R.drawable.btn_add_fav
-                        )
+                            resource.data?.let { meal ->
+                                txtMealName.text = meal.strMeal
 
-                        btnFav.setOnClickListener {
-                            viewModel.updateFavoriteState()
-                        }
+                                context?.let {
+                                    Glide.with(it).load(meal.strMealThumb).into(imgMeal)
+                                }
 
-                        imgYoutube.setOnClickListener {
-                            val url = meal.strYoutube
-                            if (url.isNotEmpty()) {
-                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                                startActivity(intent)
-                            } else {
-                                Snackbar.make(it, "Couldn't find the video connection", Snackbar.LENGTH_SHORT).show()
+                                txtArea.text = meal.strArea
+                                txtCategory.text = meal.strCategory
+                                txtTags.text = meal.strTags
+                                txtInstruction.text = meal.strInstructions
+
+                                btnFav.setImageResource(
+                                    if (meal.isFavorite) R.drawable.btn_remove_fav
+                                    else R.drawable.btn_add_fav
+                                )
+
+                                btnFav.setOnClickListener {
+                                    viewModel.updateFavoriteState()
+                                }
+
+                                imgYoutube.setOnClickListener {
+                                    val url = meal.strYoutube
+                                    if (url.isNotEmpty()) {
+                                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                                        startActivity(intent)
+                                    } else {
+                                        Snackbar.make(
+                                            it,
+                                            "Couldn't find the video connection",
+                                            Snackbar.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                }
                             }
+                        }
+
+                        is Resource.Error -> {
+                            progressBar.isGone = true
+                            txtError.isVisible = true
+                            sVMain.isGone = true
                         }
                     }
                 }

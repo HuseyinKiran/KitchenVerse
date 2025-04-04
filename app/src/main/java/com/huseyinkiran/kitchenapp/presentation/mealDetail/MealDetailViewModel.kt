@@ -6,6 +6,7 @@ import com.huseyinkiran.kitchenapp.domain.model.MealDetailUIModel
 import com.huseyinkiran.kitchenapp.domain.model.MealUIModel
 import com.huseyinkiran.kitchenapp.domain.model.toMeal
 import com.huseyinkiran.kitchenapp.domain.repository.MealsRepository
+import com.huseyinkiran.kitchenapp.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,16 +18,17 @@ class MealDetailViewModel @Inject constructor(
     private val repository: MealsRepository
 ) : ViewModel() {
 
-    private val _meal = MutableStateFlow<MealDetailUIModel?>(null)
-    val meal: StateFlow<MealDetailUIModel?> = _meal
+    private val _meal = MutableStateFlow<Resource<MealDetailUIModel?>>(Resource.Loading())
+    val meal: StateFlow<Resource<MealDetailUIModel?>> = _meal
 
     fun getMealDetails(idMeal: String) = viewModelScope.launch {
+        _meal.value = Resource.Loading()
         try {
             val response = repository.getMealDetails(idMeal)
             val isFav = repository.getFavoriteMealsById(idMeal) != null
-            _meal.value = response.copy(isFavorite = isFav)
+            _meal.value = Resource.Success(response.copy(isFavorite = isFav))
         } catch (e: Exception) {
-            e.localizedMessage
+            _meal.value = Resource.Error(e.localizedMessage ?: "Unknown Error !")
         }
     }
 
@@ -39,15 +41,22 @@ class MealDetailViewModel @Inject constructor(
     }
 
     fun updateFavoriteState() = viewModelScope.launch {
-        _meal.value?.let { currentMeal ->
-            val isFav = repository.getFavoriteMealsById(currentMeal.idMeal) != null
-            if (isFav) {
-                deleteMeal(currentMeal.toMeal())
-            } else {
-                upsertMeal(currentMeal.toMeal())
+        _meal.value = Resource.Loading()
+        try {
+            _meal.value.let { resource ->
+                val isFav =
+                    resource.data?.let { repository.getFavoriteMealsById(it.idMeal) } != null
+                if (isFav) {
+                    resource.data?.let { deleteMeal(it.toMeal()) }
+                } else {
+                    resource.data?.let { upsertMeal(it.toMeal()) }
+                }
+                _meal.value = Resource.Success(resource.data?.copy(isFavorite = !isFav))
             }
-            _meal.value = currentMeal.copy(isFavorite = !isFav)
+        } catch (e: Exception) {
+            _meal.value = Resource.Error(e.localizedMessage ?: "Unknown Error !")
         }
+
     }
 
 }
