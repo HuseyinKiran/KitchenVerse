@@ -1,0 +1,35 @@
+# --------------------
+# ANDROID PROJECT
+# --------------------
+
+# Gradle
+.gradle/
+build/
+**/build/
+
+# Local Config
+local.properties
+*.iml
+
+# Android NDK / CMake
+.externalNativeBuild/
+.cxx/
+
+# Captures
+captures/
+
+# macOS
+.DS_Store
+
+# --------------------
+# IDE SETTINGS (IntelliJ / Android Studio)
+# --------------------
+
+.idea/codeStyles/
+.idea/inspectionProfiles/
+.idea/vcs.xml
+.idea/uiDesigner.xml
+.idea/usage.statistics.xml
+.idea/editor.xml
+.idea/other.xml
+.idea/workspace.xml
