@@ -41,22 +41,14 @@ class MealDetailViewModel @Inject constructor(
     }
 
     fun updateFavoriteState() = viewModelScope.launch {
-        _meal.value = Resource.Loading()
-        try {
-            _meal.value.let { resource ->
-                val isFav =
-                    resource.data?.let { repository.getFavoriteMealsById(it.idMeal) } != null
-                if (isFav) {
-                    resource.data?.let { deleteMeal(it.toMeal()) }
-                } else {
-                    resource.data?.let { upsertMeal(it.toMeal()) }
-                }
-                _meal.value = Resource.Success(resource.data?.copy(isFavorite = !isFav))
-            }
-        } catch (e: Exception) {
-            _meal.value = Resource.Error(e.localizedMessage ?: "Unknown Error !")
+        val currentMeal = (_meal.value as Resource.Success).data ?: return@launch
+        val isFav = repository.getFavoriteMealsById(currentMeal.idMeal) != null
+        if (isFav) {
+            deleteMeal(currentMeal.toMeal())
+        } else {
+            upsertMeal(currentMeal.toMeal())
         }
-
+        _meal.value = Resource.Success(currentMeal.copy(isFavorite = !isFav))
     }
 
 }
