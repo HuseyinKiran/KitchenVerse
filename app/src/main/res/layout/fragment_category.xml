@@ -22,8 +22,8 @@
             android:id="@+id/img_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/icon_food"
             android:contentDescription="App icon"
+            android:src="@drawable/icon_food"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -34,11 +34,11 @@
             android:layout_marginStart="4dp"
             android:gravity="center_vertical"
             android:text="KitchenVerse"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/img_logo"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/img_logo"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/btn_goToFavorite"
@@ -48,11 +48,11 @@
             android:layout_margin="4dp"
             android:background="?android:selectableItemBackgroundBorderless"
             android:backgroundTint="@color/toolbar"
+            android:contentDescription="Go to Favorites Screen"
             android:src="@drawable/btn_go_to_favorites"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:contentDescription="Go to Favorites Screen" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -91,6 +91,8 @@
             android:id="@+id/rV_category"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:clipToPadding="false"
+            android:paddingTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
