@@ -1,4 +1,4 @@
-package com.huseyinkiran.kitchenapp.presentation.adapter
+package com.huseyinkiran.kitchenapp.presentation.adapter.category
 
 import androidx.recyclerview.widget.DiffUtil
 import com.huseyinkiran.kitchenapp.domain.model.CategoryUIModel

@@ -14,8 +14,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.huseyinkiran.kitchenapp.databinding.FragmentCategoryBinding
-import com.huseyinkiran.kitchenapp.presentation.adapter.CategoryAdapter
-import com.huseyinkiran.kitchenapp.utils.Resource
+import com.huseyinkiran.kitchenapp.presentation.adapter.category.CategoryAdapter
+import com.huseyinkiran.kitchenapp.common.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -54,9 +54,12 @@ class CategoryFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = CategoryAdapter(onCategoryClick = { category ->
-            val action = CategoryFragmentDirections.actionCategoryFragmentToMealFragment(category)
-            findNavController().navigate(action)
+        adapter = CategoryAdapter(callback = object : CategoryAdapter.CategoryListener {
+            override fun onCategoryClick(categoryName: String) {
+                val action =
+                    CategoryFragmentDirections.actionCategoryFragmentToMealFragment(categoryName)
+                findNavController().navigate(action)
+            }
         })
         binding.rVCategory.layoutManager = GridLayoutManager(context, 2)
         binding.rVCategory.adapter = adapter
