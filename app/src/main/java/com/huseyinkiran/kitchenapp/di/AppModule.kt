@@ -11,7 +11,7 @@ import com.huseyinkiran.kitchenapp.data.repository.MealsRepositoryImpl
 import com.huseyinkiran.kitchenapp.domain.repository.MealsLocalRepository
 import com.huseyinkiran.kitchenapp.domain.repository.MealsRemoteRepository
 import com.huseyinkiran.kitchenapp.domain.repository.MealsRepository
-import com.huseyinkiran.kitchenapp.utils.Util.BASE_URL
+import com.huseyinkiran.kitchenapp.common.ApiConstants.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
