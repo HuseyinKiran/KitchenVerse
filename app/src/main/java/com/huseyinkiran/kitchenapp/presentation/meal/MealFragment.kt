@@ -14,8 +14,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.huseyinkiran.kitchenapp.databinding.FragmentMealBinding
-import com.huseyinkiran.kitchenapp.presentation.adapter.MealAdapter
-import com.huseyinkiran.kitchenapp.utils.Resource
+import com.huseyinkiran.kitchenapp.domain.model.MealUIModel
+import com.huseyinkiran.kitchenapp.presentation.adapter.meal.MealAdapter
+import com.huseyinkiran.kitchenapp.common.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -60,11 +61,16 @@ class MealFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = MealAdapter(onMealClick = { idMeal ->
-            val action = MealFragmentDirections.actionMealFragmentToMealDetailFragment(idMeal)
-            findNavController().navigate(action)
-        }, onFavoriteClick = {
-            viewModel.updateFavoriteState(it)
+        adapter = MealAdapter(callback = object : MealAdapter.MealListener {
+            override fun onMealClick(idMeal: String) {
+                val action = MealFragmentDirections.actionMealFragmentToMealDetailFragment(idMeal)
+                findNavController().navigate(action)
+            }
+
+            override fun onFavoriteClick(meal: MealUIModel) {
+                viewModel.updateFavoriteState(meal)
+            }
+
         })
         binding.rVMeal.itemAnimator = null
         binding.rVMeal.layoutManager = GridLayoutManager(context, 2)

@@ -18,7 +18,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.huseyinkiran.kitchenapp.R
 import com.huseyinkiran.kitchenapp.databinding.FragmentMealDetailBinding
-import com.huseyinkiran.kitchenapp.utils.Resource
+import com.huseyinkiran.kitchenapp.common.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

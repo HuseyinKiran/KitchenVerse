@@ -12,7 +12,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.huseyinkiran.kitchenapp.databinding.FragmentFavoritesBinding
-import com.huseyinkiran.kitchenapp.presentation.adapter.MealAdapter
+import com.huseyinkiran.kitchenapp.domain.model.MealUIModel
+import com.huseyinkiran.kitchenapp.presentation.adapter.meal.MealAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -46,11 +47,17 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = MealAdapter(onMealClick = { idMeal ->
-            val action = FavoritesFragmentDirections.actionFavoritesFragmentToMealDetailFragment(idMeal)
-            findNavController().navigate(action)
-        }, onFavoriteClick = {
-            viewModel.deleteMeal(it)
+        adapter = MealAdapter(callback = object : MealAdapter.MealListener {
+            override fun onMealClick(idMeal: String) {
+                val action =
+                    FavoritesFragmentDirections.actionFavoritesFragmentToMealDetailFragment(idMeal)
+                findNavController().navigate(action)
+            }
+
+            override fun onFavoriteClick(meal: MealUIModel) {
+                viewModel.deleteMeal(meal)
+            }
+
         })
         binding.rVFavorites.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.rVFavorites.adapter = adapter
