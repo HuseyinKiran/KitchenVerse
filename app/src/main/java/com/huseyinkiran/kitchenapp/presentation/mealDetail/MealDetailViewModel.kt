@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.huseyinkiran.kitchenapp.domain.model.MealDetailUIModel
 import com.huseyinkiran.kitchenapp.domain.model.MealUIModel
-import com.huseyinkiran.kitchenapp.domain.model.toMeal
 import com.huseyinkiran.kitchenapp.domain.repository.MealsRepository
 import com.huseyinkiran.kitchenapp.common.Resource
+import com.huseyinkiran.kitchenapp.domain.model.toMealUI
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -44,9 +44,9 @@ class MealDetailViewModel @Inject constructor(
         val currentMeal = (_meal.value as Resource.Success).data ?: return@launch
         val isFav = repository.getFavoriteMealsById(currentMeal.idMeal) != null
         if (isFav) {
-            deleteMeal(currentMeal.toMeal())
+            deleteMeal(currentMeal.toMealUI())
         } else {
-            upsertMeal(currentMeal.toMeal())
+            upsertMeal(currentMeal.toMealUI())
         }
         _meal.value = Resource.Success(currentMeal.copy(isFavorite = !isFav))
     }

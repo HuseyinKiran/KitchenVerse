@@ -55,7 +55,7 @@ data class MealDetailUIModel(
     val strMeasure20: Any
 )
 
-fun MealDetailDto.toUI(): MealDetailUIModel {
+fun MealDetailDto.toMealDetailUI(): MealDetailUIModel {
     return MealDetailUIModel(
         idMeal = idMeal.orEmpty(),
         strMeal = strMeal.orEmpty(),
@@ -110,7 +110,7 @@ fun MealDetailDto.toUI(): MealDetailUIModel {
     )
 }
 
-fun MealDetailUIModel.toMeal(): MealUIModel {
+fun MealDetailUIModel.toMealUI(): MealUIModel {
     return MealUIModel(
         idMeal = idMeal,
         strMeal = strMeal,
@@ -118,3 +118,62 @@ fun MealDetailUIModel.toMeal(): MealUIModel {
         isFavorite = false
     )
 }
+
+fun MealDetailUIModel.toMealDto(): MealDetailDto {
+    return MealDetailDto(
+        idMeal = this.idMeal,
+        strMeal = this.strMeal,
+        strMealAlternate = null,
+        strCategory = this.strCategory,
+        strArea = this.strArea,
+        strInstructions = this.strInstructions,
+        strMealThumb = this.strMealThumb,
+        strTags = this.strTags,
+        strYoutube = this.strYoutube,
+        strSource = this.strSource,
+        strImageSource = null,
+        strCreativeCommonsConfirmed = null,
+        dateModified = null,
+        strIngredient1 = this.strIngredient1,
+        strIngredient2 = this.strIngredient2,
+        strIngredient3 = this.strIngredient3,
+        strIngredient4 = this.strIngredient4,
+        strIngredient5 = this.strIngredient5,
+        strIngredient6 = this.strIngredient6,
+        strIngredient7 = this.strIngredient7,
+        strIngredient8 = this.strIngredient8,
+        strIngredient9 = this.strIngredient9,
+        strIngredient10 = this.strIngredient10,
+        strIngredient11 = this.strIngredient11,
+        strIngredient12 = this.strIngredient12,
+        strIngredient13 = this.strIngredient13,
+        strIngredient14 = this.strIngredient14,
+        strIngredient15 = this.strIngredient15,
+        strIngredient16 = this.strIngredient16,
+        strIngredient17 = this.strIngredient17,
+        strIngredient18 = this.strIngredient18,
+        strIngredient19 = this.strIngredient19,
+        strIngredient20 = this.strIngredient20,
+        strMeasure1 = this.strMeasure1,
+        strMeasure2 = this.strMeasure2,
+        strMeasure3 = this.strMeasure3,
+        strMeasure4 = this.strMeasure4,
+        strMeasure5 = this.strMeasure5,
+        strMeasure6 = this.strMeasure6,
+        strMeasure7 = this.strMeasure7,
+        strMeasure8 = this.strMeasure8,
+        strMeasure9 = this.strMeasure9,
+        strMeasure10 = this.strMeasure10,
+        strMeasure11 = this.strMeasure11,
+        strMeasure12 = this.strMeasure12,
+        strMeasure13 = this.strMeasure13,
+        strMeasure14 = this.strMeasure14,
+        strMeasure15 = this.strMeasure15,
+        strMeasure16 = this.strMeasure16,
+        strMeasure17 = this.strMeasure17,
+        strMeasure18 = this.strMeasure18,
+        strMeasure19 = this.strMeasure19,
+        strMeasure20 = this.strMeasure20
+    )
+}
+

@@ -59,13 +59,13 @@ class MealDetailFragment : Fragment() {
                         is Resource.Loading -> {
                             progressBar.isVisible = true
                             txtError.isGone = true
-                            sVMain.isGone = true
+                            svMain.isGone = true
                         }
 
                         is Resource.Success -> {
                             progressBar.isGone = true
                             txtError.isGone = true
-                            sVMain.isVisible = true
+                            svMain.isVisible = true
 
                             resource.data?.let { meal ->
                                 txtMealName.text = meal.strMeal
@@ -107,7 +107,7 @@ class MealDetailFragment : Fragment() {
                         is Resource.Error -> {
                             progressBar.isGone = true
                             txtError.isVisible = true
-                            sVMain.isGone = true
+                            svMain.isGone = true
                         }
                     }
                 }

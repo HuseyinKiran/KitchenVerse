@@ -7,9 +7,18 @@ data class CategoryUIModel(
     val strCategoryThumb: String
 )
 
-fun CategoryDto.toUI(): CategoryUIModel {
+fun CategoryDto.toCategoryUI(): CategoryUIModel {
     return CategoryUIModel(
         strCategory = strCategory,
+        strCategoryThumb = strCategoryThumb
+    )
+}
+
+fun CategoryUIModel.toCategoryDto(): CategoryDto {
+    return CategoryDto(
+        idCategory = "",
+        strCategory = strCategory,
+        strCategoryDescription = "",
         strCategoryThumb = strCategoryThumb
     )
 }

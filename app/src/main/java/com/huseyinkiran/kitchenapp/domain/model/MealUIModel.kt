@@ -10,7 +10,7 @@ data class MealUIModel(
     val isFavorite: Boolean
 )
 
-fun MealDto.toUI(): MealUIModel {
+fun MealDto.toMealUI(): MealUIModel {
     return MealUIModel(
         idMeal = idMeal,
         strMeal = strMeal,
@@ -27,11 +27,19 @@ fun MealUIModel.toEntity(): MealEntity {
     )
 }
 
-fun MealEntity.toUI(): MealUIModel {
+fun MealEntity.toMealUI(): MealUIModel {
     return MealUIModel(
         idMeal = idMeal,
         strMeal = strMeal,
         strMealThumb = strMealThumb,
         isFavorite = false
+    )
+}
+
+fun MealUIModel.toMealDto(): MealDto {
+    return MealDto(
+        idMeal = idMeal,
+        strMeal = strMeal,
+        strMealThumb = strMealThumb
     )
 }

@@ -3,7 +3,7 @@ package com.huseyinkiran.kitchenapp.data.repository
 import com.huseyinkiran.kitchenapp.data.local.MealDao
 import com.huseyinkiran.kitchenapp.domain.model.MealUIModel
 import com.huseyinkiran.kitchenapp.domain.model.toEntity
-import com.huseyinkiran.kitchenapp.domain.model.toUI
+import com.huseyinkiran.kitchenapp.domain.model.toMealUI
 import com.huseyinkiran.kitchenapp.domain.repository.MealsLocalRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -23,12 +23,12 @@ class MealsLocalRepositoryImpl @Inject constructor(
 
     override fun getFavoriteMeals(): Flow<List<MealUIModel>> {
         return dao.getFavoriteMeals().map {  mealEntityList ->
-            mealEntityList.map { it.toUI() }
+            mealEntityList.map { it.toMealUI() }
         }
     }
 
     override suspend fun getFavoriteMealsById(idMeal: String): MealUIModel? {
-        return dao.getFavoriteMealsById(idMeal)?.toUI()
+        return dao.getFavoriteMealsById(idMeal)?.toMealUI()
     }
 
 }
