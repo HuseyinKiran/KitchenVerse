@@ -18,7 +18,7 @@ class FavoritesViewModel @Inject constructor(
 
     val favorites: StateFlow<List<MealUIModel>> = repository.getFavoriteMeals().stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
+        started = SharingStarted.Eagerly,
         initialValue = emptyList()
     )
 
