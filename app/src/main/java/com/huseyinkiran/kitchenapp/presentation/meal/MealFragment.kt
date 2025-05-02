@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -46,8 +47,6 @@ class MealFragment : Fragment() {
         setupRecyclerView()
         observeMeals()
 
-        viewModel.getMealsFromCategory(category)
-
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.getMealsFromCategory(category)
         }
@@ -55,8 +54,12 @@ class MealFragment : Fragment() {
     }
 
     private fun handleBackNavigation() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            findNavController().navigateUp()
+        }
+
         binding.btnBack.setOnClickListener {
-            findNavController().popBackStack()
+            findNavController().navigateUp()
         }
     }
 
@@ -81,30 +84,43 @@ class MealFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.mealsFromCategory.collect { resource ->
-                    when (resource) {
-                        is Resource.Loading -> {
-                            progressBar.isVisible = true
-                            txtError.isGone = true
-                            swipeRefresh.isRefreshing = false
-                            rVMeal.isGone = true
-                        }
-
-                        is Resource.Success -> {
-                            progressBar.isGone = true
-                            txtError.isGone = true
-                            swipeRefresh.isRefreshing = false
-                            resource.data?.let { adapter.loadMeals(it) }
-                            rVMeal.isVisible = true
-                        }
-
-                        is Resource.Error -> {
-                            progressBar.isGone = true
-                            txtError.isVisible = true
-                            swipeRefresh.isRefreshing = false
-                            rVMeal.isGone = true
-                        }
-                    }
+                    manageMealResource(resource)
                 }
+            }
+        }
+        viewModel.getMealsFromCategory(category)
+    }
+
+    private fun FragmentMealBinding.manageMealResource(resource: Resource<List<MealUIModel>>) {
+        when (resource) {
+            is Resource.Loading -> {
+                progressBar.isVisible = true
+                txtError.isGone = true
+                swipeRefresh.isRefreshing = false
+                rVMeal.isGone = true
+            }
+
+            is Resource.Success -> {
+                progressBar.isGone = true
+                txtError.isGone = true
+                swipeRefresh.isRefreshing = false
+                resource.data?.let { adapter.loadMeals(it) }
+                rVMeal.isVisible = true
+            }
+
+            is Resource.CacheSuccess -> {
+                progressBar.isGone = true
+                txtError.isGone = true
+                swipeRefresh.isRefreshing = false
+                resource.data?.let { adapter.loadMeals(it) }
+                rVMeal.isVisible = true
+            }
+
+            is Resource.Error -> {
+                progressBar.isGone = true
+                txtError.isVisible = true
+                swipeRefresh.isRefreshing = false
+                rVMeal.isGone = true
             }
         }
     }

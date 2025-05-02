@@ -17,7 +17,7 @@ class CategoryViewHolder(private val binding: CellCategoryBinding) :
                 .load(category.strCategoryThumb)
                 .into(imgCategory)
 
-            cVCategory.setOnClickListener {
+            cvCategory.setOnClickListener {
                 callback.onCategoryClick(category.strCategory)
             }
 

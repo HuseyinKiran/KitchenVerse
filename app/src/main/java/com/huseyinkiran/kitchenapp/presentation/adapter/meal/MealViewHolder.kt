@@ -16,7 +16,7 @@ class MealViewHolder(private val binding: CellMealBinding) : RecyclerView.ViewHo
             .load(meal.strMealThumb)
             .into(imgMeal)
 
-        cVMeal.setOnClickListener {
+        cvMeal.setOnClickListener {
             callback.onMealClick(meal.idMeal)
         }
 

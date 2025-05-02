@@ -1,21 +1,22 @@
 package com.huseyinkiran.kitchenapp.presentation.category
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.huseyinkiran.kitchenapp.databinding.FragmentCategoryBinding
-import com.huseyinkiran.kitchenapp.presentation.adapter.category.CategoryAdapter
 import com.huseyinkiran.kitchenapp.common.Resource
+import com.huseyinkiran.kitchenapp.databinding.FragmentCategoryBinding
+import com.huseyinkiran.kitchenapp.domain.model.CategoryUIModel
+import com.huseyinkiran.kitchenapp.presentation.adapter.category.CategoryAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -40,6 +41,7 @@ class CategoryFragment : Fragment() {
         navigateToFavorites()
         setupRecyclerView()
         observeCategories()
+
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.loadCategories()
         }
@@ -69,32 +71,50 @@ class CategoryFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.categories.collect { resource ->
-                    when (resource) {
-                        is Resource.Loading -> {
-                            progressBar.isVisible = true
-                            txtError.isGone = true
-                            swipeRefresh.isRefreshing = false
-                            rVCategory.isGone = true
-                        }
-
-                        is Resource.Success -> {
-                            progressBar.isGone = true
-                            txtError.isGone = true
-                            rVCategory.isVisible = true
-                            swipeRefresh.isRefreshing = false
-                            resource.data?.let { adapter.loadCategories(it) }
-                        }
-
-                        is Resource.Error -> {
-                            progressBar.isGone = true
-                            txtError.isVisible = true
-                            rVCategory.isGone = true
-                            swipeRefresh.isRefreshing = false
-                        }
-                    }
+                    manageCategoryResource(resource)
                 }
             }
         }
+        viewModel.loadCategories()
+    }
+
+    private fun FragmentCategoryBinding.manageCategoryResource(resource: Resource<List<CategoryUIModel>>) {
+        when (resource) {
+            is Resource.Loading -> {
+                progressBar.isVisible = true
+                txtError.isGone = true
+                swipeRefresh.isRefreshing = false
+                rVCategory.isGone = true
+            }
+
+            is Resource.Success -> {
+                progressBar.isGone = true
+                txtError.isGone = true
+                rVCategory.isVisible = true
+                swipeRefresh.isRefreshing = false
+                resource.data?.let { adapter.loadCategories(it) }
+            }
+
+            is Resource.CacheSuccess -> {
+                progressBar.isGone = true
+                txtError.isGone = true
+                rVCategory.isVisible = true
+                swipeRefresh.isRefreshing = false
+                resource.data?.let { adapter.loadCategories(it) }
+            }
+
+            is Resource.Error -> {
+                progressBar.isGone = true
+                txtError.isVisible = true
+                rVCategory.isGone = true
+                swipeRefresh.isRefreshing = false
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }

@@ -55,6 +55,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation("androidx.test:runner:1.6.1")
+    androidTestImplementation("androidx.test:rules:1.6.1")
 
     testImplementation("app.cash.turbine:turbine:1.2.0")
     testImplementation("com.google.truth:truth:1.4.4")
