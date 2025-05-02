@@ -22,7 +22,9 @@ class MealViewModel @Inject constructor(
     val mealsFromCategory: StateFlow<Resource<List<MealUIModel>>> = _mealsFromCategory
 
     fun getMealsFromCategory(category: String) = viewModelScope.launch {
-        _mealsFromCategory.value = Resource.Loading()
+        val isCacheValid = repository.isMealCacheValid(category)
+        if (!isCacheValid) _mealsFromCategory.value = Resource.Loading()
+
         try {
             val response = repository.getMealsFromCategory(category)
             val favorites = repository.getFavoriteMeals().first()
@@ -30,11 +32,14 @@ class MealViewModel @Inject constructor(
             val updatedMeals = response.map { meal ->
                 meal.copy(isFavorite = favoritesById.contains(meal.idMeal))
             }
-            _mealsFromCategory.value = Resource.Success(updatedMeals)
+            if (isCacheValid) {
+                _mealsFromCategory.value = Resource.CacheSuccess(updatedMeals)
+            } else {
+                _mealsFromCategory.value = Resource.Success(updatedMeals)
+            }
         } catch (e: Exception) {
             _mealsFromCategory.value = Resource.Error(e.localizedMessage ?: "Unknown Error !")
         }
-
     }
 
     private fun upsertMeal(meal: MealUIModel) = viewModelScope.launch {
@@ -52,12 +57,30 @@ class MealViewModel @Inject constructor(
         } else {
             upsertMeal(meal)
         }
-        _mealsFromCategory.value.data?.let { currentList ->
-            val updatedList = currentList.map {
-                if (meal.idMeal == it.idMeal) it.copy(isFavorite = !isFav)
-                else it
+        when (val resource = _mealsFromCategory.value) {
+            is Resource.Success -> {
+                resource.data?.let { currentList ->
+                    val updatedList = currentList.map {
+                        if (meal.idMeal == it.idMeal) it.copy(isFavorite = !isFav)
+                        else it
+                    }
+                    _mealsFromCategory.value = Resource.Success(updatedList)
+                }
             }
-            _mealsFromCategory.value = Resource.Success(updatedList)
+
+            is Resource.CacheSuccess -> {
+                resource.data?.let { currentList ->
+                    val updatedList = currentList.map {
+                        if (meal.idMeal == it.idMeal) it.copy(isFavorite = !isFav)
+                        else it
+                    }
+                    _mealsFromCategory.value = Resource.CacheSuccess(updatedList)
+                }
+            }
+
+            else -> {
+
+            }
         }
     }
 

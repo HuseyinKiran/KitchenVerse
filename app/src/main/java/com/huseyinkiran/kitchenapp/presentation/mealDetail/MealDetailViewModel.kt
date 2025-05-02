@@ -22,11 +22,18 @@ class MealDetailViewModel @Inject constructor(
     val meal: StateFlow<Resource<MealDetailUIModel?>> = _meal
 
     fun getMealDetails(idMeal: String) = viewModelScope.launch {
-        _meal.value = Resource.Loading()
+        val isCacheValid = repository.isMealDetailCacheValid(idMeal)
+        if (!isCacheValid) {
+            _meal.value = Resource.Loading()
+        }
         try {
             val response = repository.getMealDetails(idMeal)
             val isFav = repository.getFavoriteMealsById(idMeal) != null
-            _meal.value = Resource.Success(response.copy(isFavorite = isFav))
+            if (isCacheValid) {
+                _meal.value = Resource.CacheSuccess(response.copy(isFavorite = isFav))
+            } else {
+                _meal.value = Resource.Success(response.copy(isFavorite = isFav))
+            }
         } catch (e: Exception) {
             _meal.value = Resource.Error(e.localizedMessage ?: "Unknown Error !")
         }
@@ -41,14 +48,20 @@ class MealDetailViewModel @Inject constructor(
     }
 
     fun updateFavoriteState() = viewModelScope.launch {
-        val currentMeal = (_meal.value as Resource.Success).data ?: return@launch
+        val currentMeal = when(val resource = _meal.value) {
+            is Resource.CacheSuccess -> resource.data
+            is Resource.Success -> resource.data
+            else -> null
+        } ?: return@launch
+        val isCacheValid = repository.isMealDetailCacheValid(currentMeal.idMeal)
         val isFav = repository.getFavoriteMealsById(currentMeal.idMeal) != null
         if (isFav) {
             deleteMeal(currentMeal.toMealUI())
         } else {
             upsertMeal(currentMeal.toMealUI())
         }
-        _meal.value = Resource.Success(currentMeal.copy(isFavorite = !isFav))
+        if (isCacheValid) _meal.value = Resource.CacheSuccess(currentMeal.copy(isFavorite = !isFav))
+        else _meal.value = Resource.Success(currentMeal.copy(isFavorite = !isFav))
     }
 
 }

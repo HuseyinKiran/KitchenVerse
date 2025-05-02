@@ -23,4 +23,10 @@ interface MealsRepository {
 
     suspend fun getFavoriteMealsById(idMeal: String): MealUIModel?
 
+    fun isCategoryCacheValid(): Boolean
+
+    fun isMealCacheValid(category: String): Boolean
+
+    fun isMealDetailCacheValid(idMeal: String): Boolean
+
 }
