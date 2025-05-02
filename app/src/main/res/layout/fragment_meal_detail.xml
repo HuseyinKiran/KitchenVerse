@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,20 +10,20 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="0dp"
         android:background="@color/toolbar"
-        android:paddingHorizontal="8dp"
-        android:paddingVertical="10dp"
+        android:paddingVertical="@dimen/toolbar_padding_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/btn_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?android:selectableItemBackgroundBorderless"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@null"
             android:backgroundTint="@color/toolbar"
+            android:padding="@dimen/btn_back_padding"
             android:src="@drawable/icon_arrow_back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +33,6 @@
             android:id="@+id/txt_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
             android:text="Back"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="@color/white"
@@ -47,47 +46,61 @@
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_centerInParent="true" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <TextView
         android:id="@+id/txt_error"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Check your internet connection"
         android:gravity="center"
+        android:text="Check your internet connection"
         android:textColor="@color/red"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <ScrollView
         android:id="@+id/sv_main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
-        android:visibility="visible">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/txt_mealName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textSize="22sp" />
+                android:textSize="22sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cV_img_meal"
-                android:layout_width="350dp"
-                android:layout_height="350dp"
-                android:layout_below="@id/txt_mealName"
-                android:layout_centerHorizontal="true"
+                android:id="@+id/cv_img_meal"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="@dimen/cv_img_meal_detail_margin_horizontal"
                 android:layout_marginTop="8dp"
                 app:cardCornerRadius="16dp"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_mealName"
                 app:strokeWidth="12dp">
 
                 <RelativeLayout
@@ -99,7 +112,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
-                        android:layout_margin="8dp"
+                        android:layout_margin="@dimen/btn_fav_padding"
                         app:cardCornerRadius="36dp">
 
                         <ImageButton
@@ -124,16 +137,16 @@
                 android:id="@+id/layout_cV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/cV_img_meal"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 app:flexDirection="row"
                 app:flexWrap="wrap"
-                app:justifyContent="flex_start">
+                app:justifyContent="flex_start"
+                app:layout_constraintTop_toBottomOf="@id/img_youtube">
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cV_area"
+                    android:id="@+id/cv_area"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
@@ -195,7 +208,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cV_tags"
+                    android:id="@+id/cv_tags"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
@@ -228,11 +241,12 @@
             </com.google.android.flexbox.FlexboxLayout>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cV_instruction"
+                android:id="@+id/cv_instruction"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/layout_cV"
-                app:cardElevation="8dp">
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                app:cardElevation="8dp"
+                app:layout_constraintTop_toBottomOf="@id/layout_cV">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -252,9 +266,9 @@
                     <TextView
                         android:id="@+id/txt_instruction"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_below="@id/txt_instruction_title"
-                        android:layout_marginTop="4dp"
+                        android:layout_marginVertical="16dp"
                         android:paddingHorizontal="8dp"
                         android:textStyle="italic" />
 
@@ -265,11 +279,13 @@
                 android:id="@+id/img_youtube"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/cV_instruction"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="4dp"
-                android:src="@drawable/youtube" />
+                android:src="@drawable/youtube"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cv_img_meal" />
 
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

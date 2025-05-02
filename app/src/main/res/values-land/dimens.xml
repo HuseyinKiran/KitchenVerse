@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="toolbar_padding_vertical">8dp</dimen>
+    <dimen name="btn_back_padding">8dp</dimen>
+    <dimen name="recyclerView_padding_top">16dp</dimen>
+    <dimen name="cv_img_meal_detail_margin_horizontal">32dp</dimen>
+    <dimen name="cv_category_margin">16dp</dimen>
+    <dimen name="cv_meal_margin">16dp</dimen>
+    <dimen name="btn_fav_small_padding">8dp</dimen>
+    <dimen name="btn_add_fav_small_size">24dp</dimen>
+    <dimen name="btn_remove_fav_small_size">24dp</dimen>
+    <dimen name="btn_fav_padding">16dp</dimen>
+    <dimen name="btn_add_fav_size">36dp</dimen>
+    <dimen name="btn_remove_fav_size">36dp</dimen>
+</resources>
