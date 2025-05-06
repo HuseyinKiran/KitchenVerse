@@ -15,12 +15,15 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.huseyinkiran.kitchenapp.R
 import com.huseyinkiran.kitchenapp.databinding.FragmentMealDetailBinding
 import com.huseyinkiran.kitchenapp.common.Resource
 import com.huseyinkiran.kitchenapp.domain.model.MealDetailUIModel
+import com.huseyinkiran.kitchenapp.domain.model.toIngredientList
+import com.huseyinkiran.kitchenapp.presentation.adapter.ingredients.IngredientAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -31,6 +34,7 @@ class MealDetailFragment : Fragment() {
     private var _binding: FragmentMealDetailBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var ingredientAdapter: IngredientAdapter
     private lateinit var idMeal: String
 
     override fun onCreateView(
@@ -43,6 +47,14 @@ class MealDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        ingredientAdapter = IngredientAdapter()
+
+        binding.rvIngredient.apply {
+            itemAnimator = null
+            layoutManager = LinearLayoutManager(context)
+            adapter = ingredientAdapter
+        }
 
         idMeal = MealDetailFragmentArgs.fromBundle(requireArguments()).idMeal
 
@@ -120,6 +132,8 @@ class MealDetailFragment : Fragment() {
             btnFav.setOnClickListener {
                 viewModel.updateFavoriteState()
             }
+
+            ingredientAdapter.submitList(meal.toIngredientList())
 
             imgYoutube.setOnClickListener {
                 val url = meal.strYoutube

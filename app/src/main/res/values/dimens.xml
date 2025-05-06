@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="toolbar_padding_vertical">8dp</dimen>
+    <dimen name="toolbar_padding_vertical">4dp</dimen>
     <dimen name="btn_back_padding">8dp</dimen>
     <dimen name="recyclerView_padding_top">8dp</dimen>
     <dimen name="cv_img_meal_detail_margin_horizontal">16dp</dimen>
@@ -12,4 +12,7 @@
     <dimen name="btn_fav_padding">8dp</dimen>
     <dimen name="btn_add_fav_size">24dp</dimen>
     <dimen name="btn_remove_fav_size">24dp</dimen>
+    <dimen name="txt_mealName_size">20sp</dimen>
+    <dimen name="cv_ingredients_margin">16dp</dimen>
+    <dimen name="flexbox_margin">8dp</dimen>
 </resources>
