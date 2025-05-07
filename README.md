@@ -21,11 +21,11 @@
 
 ## 📸 Screenshots
 
-![CategoryFragment](./images/CategoryFragment.png)
-![MealFragment](./images/MealFragment.png)
-![MealFragment](./images/MealFragment2.png)
-![MealDetailFragment](./images/MealDetailFragment.png)
-![MealDetailFragment](./images/MealDetailFragment2.png)
-![FavoritesFragment](./images/FavoritesFragment.png)
+![CategoryFragment](./images/Categories.png)
+![MealFragment](./images/Meals.png)
+![MealDetailFragment](./images/Detail1.png)
+![MealDetailFragment](./images/Detail2.png)
+![MealDetailFragment](./images/Detail2.1.png)
+![FavoritesFragment](./images/Favorites.png)
 
 > Screenshots are stored in the `images/` directory for better organization.
